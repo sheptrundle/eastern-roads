@@ -3,7 +3,10 @@ public class Main {
         try {
             DatabaseDriver db = new DatabaseDriver();
             db.connect();
+            db.deleteTables();
             db.createTables();
+            GermanyCreatures germanyCreatures = new GermanyCreatures();
+            db.addCreature(germanyCreatures.getCreature("drude"));
             db.commit();
             db.disconnect();
         } catch (Exception e) {

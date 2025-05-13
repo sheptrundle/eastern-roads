@@ -1,6 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseDriver {
     private final String sqliteFilename;
@@ -34,18 +32,63 @@ public class DatabaseDriver {
     public void createTables() throws SQLException {
         Statement statement = connection.createStatement();
         // MyCreatures
-        String createMyCreatures = """
-                CREATE TABLE IF NOT EXISTS MyCreatures(
+        String createCreatures = """
+                CREATE TABLE IF NOT EXISTS Creatures(
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Name TEXT NOT NULL,
+                    Name TEXT UNIQUE NOT NULL,
                     Origin TEXT NOT NULL,
-                    Description TEXT NOT NULL,
-                    PrimaryAttack TEXT NOT NULL,
-                    SecondaryAttack TEXT NOT NULL,
-                    Ability TEXT NOT NULL,
-                    Passive TEXT NOT NULL
+                    OriginID INTEGER NOT NULL,
+                    Description TEXT NOT NULL
                 );
             """;
-        statement.executeUpdate(createMyCreatures);
+        statement.executeUpdate(createCreatures);
+    }
+
+    // Deletes all tables
+    public void deleteTables() throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("DROP TABLE IF EXISTS Creatures");
+    }
+
+    // Deletes all data from all tables
+    @SuppressWarnings("SqlWithoutWhere")
+    public void clearTables() throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("DELETE FROM Creatures");
+            statement.executeUpdate("DELETE FROM sqlite_sequence WHERE name='Creatures'");
+        } catch (SQLException e) {
+            rollback();
+            throw new SQLException(e);
+        }
+    }
+
+    // Add a creature to database, returns false if creature already exists in database
+    public boolean addCreature(Creature creature) throws SQLException {
+        try {
+            // Check if creature already exists
+            String checkCreaturesSQL = "SELECT 1 FROM Creatures WHERE Name = ?";
+            PreparedStatement checkStmt = connection.prepareStatement(checkCreaturesSQL);
+            checkStmt.setString(1, creature.getName());
+            ResultSet rs = checkStmt.executeQuery();
+            // Creature already exists, return false
+            if (rs.next()) {
+                return false;
+            }
+            // Creature is unique, update and return true
+            String insertUserSQL = "INSERT INTO Creatures (Name, Origin, OriginID, Description) VALUES (?, ?, ?, ?)";
+            PreparedStatement insertStatement = connection.prepareStatement(insertUserSQL);
+            insertStatement.setString(1, creature.getName());
+            insertStatement.setString(2, creature.getOrigin());
+            OriginFactory originFactory = new OriginFactory();
+            insertStatement.setInt(3, originFactory.getOriginID(creature.getOrigin()));
+            insertStatement.setString(4, creature.getDescription());
+            insertStatement.executeUpdate();
+            return true;
+        }
+        catch (SQLException e) {
+            rollback();
+            throw new SQLException(e);
+        }
     }
 }
