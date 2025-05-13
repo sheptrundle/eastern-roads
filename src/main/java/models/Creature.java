@@ -1,3 +1,5 @@
+package models;
+
 public class Creature {
     private String name;
     private String origin;

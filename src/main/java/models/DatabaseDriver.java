@@ -1,3 +1,5 @@
+package models;
+
 import java.sql.*;
 
 public class DatabaseDriver {
@@ -71,11 +73,11 @@ public class DatabaseDriver {
             PreparedStatement checkStmt = connection.prepareStatement(checkCreaturesSQL);
             checkStmt.setString(1, creature.getName());
             ResultSet rs = checkStmt.executeQuery();
-            // Creature already exists, return false
+            // models.Creature already exists, return false
             if (rs.next()) {
                 return false;
             }
-            // Creature is unique, update and return true
+            // models.Creature is unique, update and return true
             String insertUserSQL = "INSERT INTO Creatures (Name, Origin, OriginID, Description) VALUES (?, ?, ?, ?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertUserSQL);
             insertStatement.setString(1, creature.getName());

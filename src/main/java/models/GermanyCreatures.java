@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("StringTemplateMigration")
@@ -29,6 +31,6 @@ public class GermanyCreatures implements CreatureGroup {
                 return creature;
             }
         }
-        throw new IllegalArgumentException("Creature with name " + name + " not found");
+        throw new IllegalArgumentException("models.Creature with name " + name + " not found");
     }
 }

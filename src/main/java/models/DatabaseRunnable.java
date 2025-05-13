@@ -1,9 +1,10 @@
-public class Main {
+package models;
+
+public class DatabaseRunnable {
     public static void main(String[] args) {
         try {
             DatabaseDriver db = new DatabaseDriver();
             db.connect();
-            db.deleteTables();
             db.createTables();
             GermanyCreatures germanyCreatures = new GermanyCreatures();
             db.addCreature(germanyCreatures.getCreature("drude"));
