@@ -1,11 +1,13 @@
-package models;
+package creatureGroups;
+
+import models.*;
 
 import java.util.ArrayList;
 import java.util.List;
 @SuppressWarnings("StringTemplateMigration")
 
 public class GermanyCreatures implements CreatureGroup {
-    private ArrayList<Creature> creatures;
+    private final ArrayList<Creature> creatures;
 
     // Drude
     Attack drudePrimary = new Attack("Slash", 3, 90);
@@ -19,6 +21,10 @@ public class GermanyCreatures implements CreatureGroup {
     public GermanyCreatures() {
         creatures = new ArrayList<>();
         creatures.add(drude);
+    }
+
+    public String getOrigin() {
+        return "Germany";
     }
 
     public List<Creature> getCreatures() {

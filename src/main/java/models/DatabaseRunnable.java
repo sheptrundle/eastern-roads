@@ -1,5 +1,7 @@
 package models;
 
+import creatureGroups.GermanyCreatures;
+
 public class DatabaseRunnable {
     public static void main(String[] args) {
         try {

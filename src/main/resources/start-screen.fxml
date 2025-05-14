@@ -11,4 +11,16 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.StartScreenController"
             prefHeight="580.0" prefWidth="1000.0">
+    <Label fx:id="message"
+           text="Welcome to Eastern Roads"
+           layoutY="10"
+           style= "-fx-text-fill: white; -fx-font-size: 12px;"
+           AnchorPane.rightAnchor="10.0"
+           AnchorPane.topAnchor="10.0"/>
+    <Button fx:id="myCreatures"
+            text="My Creatures"
+            layoutX="880"
+            layoutY="540"
+            onAction="#handleMyCreatures"
+            style="-fx-background-color: #7A3A09; -fx-text-fill: white;" />
 </AnchorPane>

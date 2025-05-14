@@ -73,7 +73,7 @@ public class DatabaseDriver {
             PreparedStatement checkStmt = connection.prepareStatement(checkCreaturesSQL);
             checkStmt.setString(1, creature.getName());
             ResultSet rs = checkStmt.executeQuery();
-            // models.Creature already exists, return false
+            // Creature already exists, return false
             if (rs.next()) {
                 return false;
             }
