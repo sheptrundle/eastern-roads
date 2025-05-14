@@ -1,8 +1,10 @@
 import controllers.StartScreenController;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import models.DatabaseDriver;
 
@@ -20,7 +22,7 @@ public class EasternRoadsApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("start-screen.fxml"));
         Parent root = fxmlLoader.load();
         StartScreenController controller =  fxmlLoader.getController();
-        // controller.setDatabaseDriver(db);
+        controller.setDatabaseDriver(db);
 
         // Set scene
         Scene scene = new Scene(root);
