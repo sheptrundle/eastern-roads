@@ -11,7 +11,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.VBox;
 import models.DatabaseDriver;
 import models.ImageLoader;
-import models.SceneSwitcher;
+import models.Player;
 
 public class StartScreenController {
     @FXML private AnchorPane anchorPane;
@@ -21,9 +21,11 @@ public class StartScreenController {
     @FXML private Button creditsButton;
     @FXML private Button exitButton;
     private DatabaseDriver db;
+    private Player player;
 
-    public void setDatabaseDriver(DatabaseDriver db) {
+    public void setDBandPlayer(DatabaseDriver db, Player player) {
         this.db = db;
+        this.player = player;
     }
 
     @FXML public void initialize() {

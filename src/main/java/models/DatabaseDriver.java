@@ -2,6 +2,7 @@ package models;
 
 import java.sql.*;
 
+@SuppressWarnings("StringTemplateMigration")
 public class DatabaseDriver {
     private final String sqliteFilename;
     private Connection connection;
@@ -44,6 +45,14 @@ public class DatabaseDriver {
                 );
             """;
         statement.executeUpdate(createCreatures);
+        // Player level
+        String createPlayer = """
+                CREATE TABLE IF NOT EXISTS Player(
+                    ID INTEGER PRIMARY KEY,
+                    HighestOrigin INTEGER NOT NULL
+                );
+            """;
+        statement.executeUpdate(createPlayer);
     }
 
     // Deletes all tables
@@ -90,6 +99,28 @@ public class DatabaseDriver {
         }
         catch (SQLException e) {
             rollback();
+            throw new SQLException(e);
+        }
+    }
+
+    public void addPlayer(Player player) throws SQLException {
+        try {
+            String addPlayerSQL = "INSERT INTO Player(ID, HighestOrigin) VALUES (?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(addPlayerSQL);
+            preparedStatement.setInt(1, 1);
+            preparedStatement.setInt(2, player.getHighestOrigin());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
+    }
+
+    public void updateHighestOrigin(int highestOrigin) throws SQLException {
+        try {
+            String updateHighestOriginSQL = "UPDATE Player Set HighestOrigin = ? WHERE ID = 1";
+            PreparedStatement preparedStatement = connection.prepareStatement(updateHighestOriginSQL);
+            preparedStatement.setInt(1, highestOrigin);
+        } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
