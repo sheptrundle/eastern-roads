@@ -86,7 +86,7 @@ public class DatabaseDriver {
             if (rs.next()) {
                 return false;
             }
-            // models.Creature is unique, update and return true
+            // Creature is unique, update and return true
             String insertUserSQL = "INSERT INTO Creatures (Name, Origin, OriginID, Description) VALUES (?, ?, ?, ?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertUserSQL);
             insertStatement.setString(1, creature.getName());
@@ -103,13 +103,22 @@ public class DatabaseDriver {
         }
     }
 
-    public void addPlayer(Player player) throws SQLException {
+    public boolean addPlayer(Player player) throws SQLException {
         try {
+            // Check if player is already entered in system
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Player");
+            // Player already logged, return false
+            if (rs.next()) {
+                return false;
+            }
+            // models.Creature is unique, update and return true
             String addPlayerSQL = "INSERT INTO Player(ID, HighestOrigin) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(addPlayerSQL);
             preparedStatement.setInt(1, 1);
             preparedStatement.setInt(2, player.getHighestOrigin());
             preparedStatement.executeUpdate();
+            return true;
         } catch (SQLException e) {
             throw new SQLException(e);
         }
