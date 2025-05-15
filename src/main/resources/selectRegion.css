@@ -1,0 +1,17 @@
+/* Style the MenuButton */
+.menu-button {
+    -fx-background-color: #7A3A09;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+/* Style the popup menu */
+.context-menu {
+    -fx-background-color: #7A3A09;
+}
+
+/* Style each menu item inside the dropdown */
+.menu-item .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}

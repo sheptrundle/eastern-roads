@@ -9,9 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.VBox;
-import models.DatabaseDriver;
-import models.ImageLoader;
-import models.Player;
+import models.*;
 
 public class StartScreenController {
     @FXML private AnchorPane anchorPane;
@@ -22,10 +20,15 @@ public class StartScreenController {
     @FXML private Button exitButton;
     private DatabaseDriver db;
     private Player player;
+    private CreatureGroup creatureGroup;
 
     public void setDBandPlayer(DatabaseDriver db, Player player) {
         this.db = db;
         this.player = player;
+    }
+
+    public void setCreatureGroup(CreatureGroup creatureGroup) {
+        this.creatureGroup = creatureGroup;
     }
 
     @FXML public void initialize() {
@@ -54,4 +57,8 @@ public class StartScreenController {
             message.setText("Error closing application");
         }
     }
+
+    // One method for each item in region select dropdown menu
+    @FXML public void handleSelectGermany(ActionEvent event) {setCreatureGroup(OriginFactory.getCreatureGroup("Germany"));}
+    @FXML public void handleSelectHungary(ActionEvent event) { /*hungary creature group here */ }
 }

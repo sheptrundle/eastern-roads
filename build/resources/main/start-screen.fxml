@@ -10,6 +10,7 @@
             fx:id="anchorPane"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.StartScreenController"
+            stylesheets="@selectRegion.css"
             prefHeight="580.0" prefWidth="1000.0">
     <Label fx:id="message"
            layoutX="860"
@@ -26,6 +27,14 @@
                  wrapText="true"
                  style="-fx-font-size: 14; -fx-text-fill: white"/>
     </VBox>
+    <MenuButton text="Select Region"
+                layoutX="863"
+                layoutY="160">
+        <items>
+            <MenuItem text="Germany" onAction="#handleSelectGermany"/>
+            <MenuItem text="Hungary" onAction="#handleSelectHungary"/>
+        </items>
+    </MenuButton>
     <Button fx:id="creditsButton"
             text="Credits"
             layoutX="870"

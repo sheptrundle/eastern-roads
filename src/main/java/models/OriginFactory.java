@@ -8,23 +8,18 @@ import java.util.List;
 @SuppressWarnings("StringTemplateMigration")
 
 public class OriginFactory {
-    private final ArrayList<String> creatureGroups = new ArrayList<>() {{
-        add("Germany");
-        add("Hungary");
-    }};
+    private static final List<String> CREATURE_GROUPS = List.of("Germany", "Hungary");
 
-    public OriginFactory() {}
-
-    public int getOriginID(String origin) {
-        for (int i = 0; i < creatureGroups.size(); i++) {
-            if (creatureGroups.get(i).equals(origin)) {
+    public static int getOriginID(String origin) {
+        for (int i = 0; i < CREATURE_GROUPS.size(); i++) {
+            if (CREATURE_GROUPS.get(i).equals(origin)) {
                 return i;
             }
         }
         throw new IllegalArgumentException("ID out of bounds for origins");
     }
 
-    public CreatureGroup getCreatureGroup(String origin) {
+    public static CreatureGroup getCreatureGroup(String origin) {
         switch (origin) {
             case "Germany":
                 return new GermanyCreatures();
@@ -32,15 +27,15 @@ public class OriginFactory {
         throw new IllegalArgumentException("Unknown creature group: " + origin);
     }
 
-    public List<String> getOrigins(Player player) throws IllegalArgumentException {
+    public static List<String> getOrigins(Player player) throws IllegalArgumentException {
         try {
-            ArrayList<String> origins = new ArrayList<>();
-            for (int i = 0; i <= player.getHighestOrigin(); i++) {
-                origins.add(creatureGroups.get(i));
+            int highest = player.getHighestOrigin();
+            if (highest < 0 || highest >= CREATURE_GROUPS.size()) {
+                throw new IllegalArgumentException("Highest Origins must be >= 0 and < total origins");
             }
-            return origins;
+            return new ArrayList<>(CREATURE_GROUPS.subList(0, highest + 1));
         } catch (Exception e) {
-            throw new IllegalArgumentException("Highest Origins must be greater than zero and less than total origins");
+            throw new IllegalArgumentException("Error retrieving origins for player");
         }
     }
 }
