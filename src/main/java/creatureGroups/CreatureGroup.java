@@ -1,4 +1,6 @@
-package models;
+package creatureGroups;
+
+import models.Creature;
 
 import java.util.List;
 

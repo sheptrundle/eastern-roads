@@ -12,10 +12,18 @@
             fx:controller="controllers.StartScreenController"
             stylesheets="@selectRegion.css"
             prefHeight="580.0" prefWidth="1000.0">
-    <Label fx:id="message"
+    <Label fx:id="welcomeMessage"
            layoutX="860"
            layoutY="10"
            style= "-fx-text-fill: #4D2506; -fx-font-size: 18;" />
+    <Label fx:id="highestRegionMessage"
+           layoutX="860"
+           layoutY="60"
+           style= "-fx-text-fill: #A4E6EF; -fx-font-size: 16;" />
+    <Label fx:id="currentRegionMessage"
+           layoutX="860"
+           layoutY="110"
+           style= "-fx-text-fill: #66FF6A; -fx-font-size: 16;" />
     <VBox fx:id="creditsBox"
           layoutX="50" layoutY="100"
           style="-fx-background-color: #7A3A09; -fx-padding: 10; -fx-border-color: #522706; -fx-border-width: 8"
@@ -28,6 +36,7 @@
                  style="-fx-font-size: 14; -fx-text-fill: white"/>
     </VBox>
     <MenuButton text="Select Region"
+                style="-fx-background-color: #7A3A09; -fx-text-fill: white;"
                 layoutX="863"
                 layoutY="160">
         <items>

@@ -1,5 +1,6 @@
 package controllers;
 
+import creatureGroups.CreatureGroup;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,7 +14,9 @@ import models.*;
 
 public class StartScreenController {
     @FXML private AnchorPane anchorPane;
-    @FXML private Label message;
+    @FXML private Label welcomeMessage;
+    @FXML private Label highestRegionMessage;
+    @FXML private Label currentRegionMessage;
     @FXML private VBox creditsBox;
     @FXML private Label creditsLabel;
     @FXML private Button creditsButton;
@@ -31,11 +34,13 @@ public class StartScreenController {
         this.creatureGroup = creatureGroup;
     }
 
-    @FXML public void initialize() {
+    @FXML public void setUp() {
         ImageLoader imageLoader = new ImageLoader();
         BackgroundImage backgroundImage = imageLoader.loadImage("/images/ERStartScreen.jpg");
         anchorPane.setBackground(new Background(backgroundImage));
-        message.setText("   Welcome to \n Eastern Roads!");
+        welcomeMessage.setText("   Welcome to \n Eastern Roads!");
+        highestRegionMessage.setText("Highest Region:\n" + OriginFactory.getHighestRegion(player));
+
     }
 
     @FXML
@@ -54,7 +59,7 @@ public class StartScreenController {
             db.disconnect();
             Platform.exit();
         } catch (Exception e) {
-            message.setText("Error closing application");
+            welcomeMessage.setText("Error closing application");
         }
     }
 

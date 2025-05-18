@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class Player {
     private ArrayList<Creature> creatures = new ArrayList<>();
-    private int highestOrigin;
+    private int highestRegion;
 
     // Getters and setters
     public ArrayList<Creature> getCreatures() {return creatures;}
     public void setCreatures(ArrayList<Creature> creatures) {this.creatures = creatures;}
-    public int getHighestOrigin() {return highestOrigin;}
-    public void setHighestOrigin(int highestOrigin) {this.highestOrigin = highestOrigin;}
+    public int getHighestRegion() {return highestRegion;}
+    public void setHighestRegion(int highestRegion) {this.highestRegion = highestRegion;}
 
     // Brand-new player
     public Player() {
         this.creatures = new ArrayList<>();
-        this.highestOrigin = 0;
+        this.highestRegion = 0;
     }
 
     // Full-arg Constructor
-    public Player(ArrayList<Creature> creatures, int highestOrigin) {
+    public Player(ArrayList<Creature> creatures, int highestRegion) {
         this.creatures = creatures;
-        this.highestOrigin = highestOrigin;
+        this.highestRegion = highestRegion;
     }
 
     // Adds a creature to players personal collection

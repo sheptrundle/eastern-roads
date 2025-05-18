@@ -12,11 +12,13 @@ public class EasternRoadsApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
         // Set database and connect
         DatabaseDriver db = new DatabaseDriver();
-        Player player = new Player();
+
         db.connect();
         db.createTables();
+        Player player = db.getPlayer();
         db.addPlayer(player);
         db.commit();
 
@@ -25,6 +27,7 @@ public class EasternRoadsApplication extends Application {
         Parent root = fxmlLoader.load();
         StartScreenController controller =  fxmlLoader.getController();
         controller.setDBandPlayer(db, player);
+        controller.setUp();
 
         // Set scene
         Scene scene = new Scene(root);

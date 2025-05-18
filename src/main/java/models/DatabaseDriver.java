@@ -1,6 +1,9 @@
 package models;
 
+import creatureGroups.CreatureGroup;
+
 import java.sql.*;
+import java.util.ArrayList;
 
 @SuppressWarnings("StringTemplateMigration")
 public class DatabaseDriver {
@@ -40,7 +43,6 @@ public class DatabaseDriver {
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     Name TEXT UNIQUE NOT NULL,
                     Origin TEXT NOT NULL,
-                    OriginID INTEGER NOT NULL,
                     Description TEXT NOT NULL
                 );
             """;
@@ -49,7 +51,7 @@ public class DatabaseDriver {
         String createPlayer = """
                 CREATE TABLE IF NOT EXISTS Player(
                     ID INTEGER PRIMARY KEY,
-                    HighestOrigin INTEGER NOT NULL
+                    HighestRegion INTEGER NOT NULL
                 );
             """;
         statement.executeUpdate(createPlayer);
@@ -59,6 +61,7 @@ public class DatabaseDriver {
     public void deleteTables() throws SQLException {
         Statement statement = connection.createStatement();
         statement.executeUpdate("DROP TABLE IF EXISTS Creatures");
+        statement.executeUpdate("DROP TABLE IF EXISTS Player");
     }
 
     // Deletes all data from all tables
@@ -87,19 +90,36 @@ public class DatabaseDriver {
                 return false;
             }
             // Creature is unique, update and return true
-            String insertUserSQL = "INSERT INTO Creatures (Name, Origin, OriginID, Description) VALUES (?, ?, ?, ?)";
+            String insertUserSQL = "INSERT INTO Creatures (Name, Origin, Description) VALUES (?, ?, ?)";
             PreparedStatement insertStatement = connection.prepareStatement(insertUserSQL);
             insertStatement.setString(1, creature.getName());
             insertStatement.setString(2, creature.getOrigin());
-            OriginFactory originFactory = new OriginFactory();
-            insertStatement.setInt(3, originFactory.getOriginID(creature.getOrigin()));
-            insertStatement.setString(4, creature.getDescription());
+            insertStatement.setString(3, creature.getDescription());
             insertStatement.executeUpdate();
+            commit();
             return true;
         }
         catch (SQLException e) {
             rollback();
             throw new SQLException(e);
+        }
+    }
+
+    public ArrayList<Creature> getCreatures() throws SQLException {
+        try {
+            ArrayList<Creature> creatures = new ArrayList<>();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Creatures");
+            // Loop through all creatures
+            while (rs.next()) {
+                String name = rs.getString("Name");
+                String origin = rs.getString("Origin");
+                CreatureGroup creatureGroup = OriginFactory.getCreatureGroup(origin);
+                creatures.add(creatureGroup.getCreature(name));
+            }
+            return creatures;
+        } catch (SQLException e) {
+            throw new SQLException("Error retrieving creatures from database");
         }
     }
 
@@ -113,20 +133,36 @@ public class DatabaseDriver {
                 return false;
             }
             // models.Creature is unique, update and return true
-            String addPlayerSQL = "INSERT INTO Player(ID, HighestOrigin) VALUES (?, ?)";
+            String addPlayerSQL = "INSERT INTO Player(ID, HighestRegion) VALUES (?, ?)";
             PreparedStatement preparedStatement = connection.prepareStatement(addPlayerSQL);
             preparedStatement.setInt(1, 1);
-            preparedStatement.setInt(2, player.getHighestOrigin());
+            preparedStatement.setInt(2, player.getHighestRegion());
             preparedStatement.executeUpdate();
+            commit();
             return true;
         } catch (SQLException e) {
             throw new SQLException(e);
         }
     }
 
+    public Player getPlayer() throws SQLException {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM Player");
+            if (rs.next()) {
+                int highestRegion = rs.getInt("HighestRegion");
+                return new Player(getCreatures(), highestRegion);
+            } else {
+                throw new SQLException("No player in database");
+            }
+        } catch (SQLException e) {
+            throw new SQLException("Error retrieving player from database");
+        }
+    }
+
     public void updateHighestOrigin(int highestOrigin) throws SQLException {
         try {
-            String updateHighestOriginSQL = "UPDATE Player Set HighestOrigin = ? WHERE ID = 1";
+            String updateHighestOriginSQL = "UPDATE Player Set HighestRegion = ? WHERE ID = 1";
             PreparedStatement preparedStatement = connection.prepareStatement(updateHighestOriginSQL);
             preparedStatement.setInt(1, highestOrigin);
         } catch (SQLException e) {
