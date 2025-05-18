@@ -12,6 +12,7 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.VBox;
 import models.*;
 
+@SuppressWarnings("StringTemplateMigration")
 public class StartScreenController {
     @FXML private AnchorPane anchorPane;
     @FXML private Label welcomeMessage;
@@ -39,8 +40,18 @@ public class StartScreenController {
         BackgroundImage backgroundImage = imageLoader.loadImage("/images/ERStartScreen.jpg");
         anchorPane.setBackground(new Background(backgroundImage));
         welcomeMessage.setText("   Welcome to \n Eastern Roads!");
-        highestRegionMessage.setText("Highest Region:\n" + OriginFactory.getHighestRegion(player));
+        updateHighestRegion();
+        updateCurrentRegion("Germany");
+    }
 
+    // Automatically sets the Highest Region message to players highest
+    public void updateHighestRegion() {
+        highestRegionMessage.setText("Highest Region:\n" + OriginFactory.getHighestRegion(player));
+    }
+
+    // Automatically sets the Current Region messaged to whatever is given by parameter
+    public void updateCurrentRegion(String region) {
+        currentRegionMessage.setText("Current Region:\n" + region);
     }
 
     @FXML
@@ -64,6 +75,6 @@ public class StartScreenController {
     }
 
     // One method for each item in region select dropdown menu
-    @FXML public void handleSelectGermany(ActionEvent event) {setCreatureGroup(OriginFactory.getCreatureGroup("Germany"));}
-    @FXML public void handleSelectHungary(ActionEvent event) { /*hungary creature group here */ }
+    @FXML public void handleSelectGermany(ActionEvent event) {setCreatureGroup(OriginFactory.getCreatureGroup("Germany")); updateCurrentRegion("Germany");}
+    @FXML public void handleSelectHungary(ActionEvent event) { /*hungary implementation group here */ }
 }

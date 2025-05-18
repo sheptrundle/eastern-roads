@@ -23,7 +23,7 @@
     <Label fx:id="currentRegionMessage"
            layoutX="860"
            layoutY="110"
-           style= "-fx-text-fill: #66FF6A; -fx-font-size: 16;" />
+           style= "-fx-text-fill: #87FF88; -fx-font-size: 16;" />
     <VBox fx:id="creditsBox"
           layoutX="50" layoutY="100"
           style="-fx-background-color: #7A3A09; -fx-padding: 10; -fx-border-color: #522706; -fx-border-width: 8"
