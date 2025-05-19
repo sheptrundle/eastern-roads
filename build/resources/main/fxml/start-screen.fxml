@@ -10,7 +10,7 @@
             fx:id="anchorPane"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.StartScreenController"
-            stylesheets="@selectRegion.css"
+            stylesheets="@../selectRegion.css"
             prefHeight="580.0" prefWidth="1000.0">
     <Label fx:id="welcomeMessage"
            layoutX="860"

@@ -23,9 +23,9 @@ public class EasternRoadsApplication extends Application {
         db.commit();
 
         // Link database to controller
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("start-screen.fxml"));
-        Parent root = fxmlLoader.load();
-        StartScreenController controller =  fxmlLoader.getController();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/start-screen.fxml"));
+        Parent root = loader.load();
+        StartScreenController controller =  loader.getController();
         controller.setDBandPlayer(db, player);
         controller.setUp();
 

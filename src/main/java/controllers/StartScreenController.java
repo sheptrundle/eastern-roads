@@ -10,7 +10,11 @@ import javafx.scene.layout.*;
 import models.*;
 
 @SuppressWarnings("StringTemplateMigration")
-public class StartScreenController {
+public class StartScreenController implements Controller {
+    // Interface fields
+    private DatabaseDriver db;
+    private Player player;
+    // FXML fields
     @FXML private AnchorPane anchorPane;
     @FXML private Label welcomeMessage;
     @FXML private Label highestRegionMessage;
@@ -23,9 +27,12 @@ public class StartScreenController {
     @FXML private HBox yesNoBox;
     @FXML private Button creditsButton;
     @FXML private Button exitButton;
-    private DatabaseDriver db;
-    private Player player;
+    // Other fields
     private CreatureGroup creatureGroup;
+
+    // Interface methods
+    public DatabaseDriver getDatabaseDriver() {return db;}
+    public Player getPlayer() {return player;}
 
     public void setDBandPlayer(DatabaseDriver db, Player player) {
         this.db = db;
@@ -37,10 +44,8 @@ public class StartScreenController {
         this.creatureGroup = creatureGroup;
     }
 
-    @FXML public void setUp() {
-        ImageLoader imageLoader = new ImageLoader();
-        BackgroundImage backgroundImage = imageLoader.loadImage("/images/ERStartScreen.jpg");
-        anchorPane.setBackground(new Background(backgroundImage));
+    public void setUp() {
+        anchorPane.setBackground(SceneSwitcher.loadImage("/images/ERStartScreen.jpg"));
         welcomeMessage.setText("   Welcome to \n Eastern Roads!");
         updateHighestRegion();
         updateCurrentRegion("Germany");
@@ -75,7 +80,11 @@ public class StartScreenController {
 
     @FXML
     public void handleMyCreatures(ActionEvent event) {
-
+        try {
+            SceneSwitcher.changeScene("/fxml/my-creatures.fxml", this, event, "My Creatures");
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     @FXML
