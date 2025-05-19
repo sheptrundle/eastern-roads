@@ -17,6 +17,8 @@ public class StartScreenController {
     @FXML private Label currentRegionMessage;
     @FXML private VBox promptBox;
     @FXML private Label promptLabel;
+    private int whichPromptBox;
+    @FXML private Button myCreaturesButton;
     @FXML private Button resetButton;
     @FXML private HBox yesNoBox;
     @FXML private Button creditsButton;
@@ -28,6 +30,7 @@ public class StartScreenController {
     public void setDBandPlayer(DatabaseDriver db, Player player) {
         this.db = db;
         this.player = player;
+        whichPromptBox = 0;
     }
 
     public void setCreatureGroup(CreatureGroup creatureGroup) {
@@ -55,41 +58,62 @@ public class StartScreenController {
 
     // ~~~Buttons Below~~~
 
-    public void togglePromptBox(String text, boolean showButtons) {
-        boolean show = !promptBox.isVisible();
-        promptBox.setVisible(show);
-        promptBox.setManaged(show);
+    // Hides prompt box
+    public void hidePromptBox() {
+        promptBox.setVisible(false);
+        promptBox.setManaged(false);
+    }
+
+    // Shows prompt box with given text, shows buttons based on given boolean
+    public void showPromptBox(String text, boolean showButtons) {
+        promptBox.setVisible(true);
+        promptBox.setManaged(true);
         promptLabel.setText(text);
         yesNoBox.setVisible(showButtons);
         yesNoBox.setManaged(showButtons);
     }
 
     @FXML
+    public void handleMyCreatures(ActionEvent event) {
+
+    }
+
+    @FXML
     public void handleReset(ActionEvent event) {
-        togglePromptBox("Are you sure you want to reset all your progress?\n" +
-                "This action cannot be undone.", true);
+        if (!promptBox.isVisible() || (promptBox.isVisible() && whichPromptBox != 0)) {
+            showPromptBox("Are you sure you want to reset all your progress?\n" +
+                    "This action cannot be undone.", true);
+            whichPromptBox = 0;
+        } else {
+            hidePromptBox();
+        }
     }
 
     @FXML public void handleYesReset(ActionEvent event) {
         try {
             db.alterHighestRegion(0);
             db.clearTables();
-            togglePromptBox("", false);
+            showPromptBox("", false);
         } catch (Exception e) {
             welcomeMessage.setText("Error resetting progress");
         }
     }
 
     @FXML public void handleNoReset(ActionEvent event) {
-        togglePromptBox("", false);
+        hidePromptBox();
     }
 
     @FXML
     public void handleCredits(ActionEvent event) {
-        togglePromptBox("Game developed as a personal project by Shep Trundle,\n" +
-                "undergraduate student at the University of Virginia.\n\n" +
-                "Built using IntelliJ and JavaFX.\n\n" +
-                "Art by Shep Trundle, made using pixilart.com", false);
+        if (!promptBox.isVisible() || (promptBox.isVisible() && whichPromptBox != 1)) {
+            showPromptBox("Game developed as a personal project by Shep Trundle,\n" +
+                    "undergraduate student at the University of Virginia.\n\n" +
+                    "Built using IntelliJ and JavaFX.\n\n" +
+                    "Art by Shep Trundle, made using pixilart.com", false);
+            whichPromptBox = 1;
+        } else {
+            hidePromptBox();
+        }
     }
 
     @FXML public void handleExit(ActionEvent event) {

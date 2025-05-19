@@ -50,14 +50,22 @@
             <MenuItem text="Hungary" onAction="#handleSelectHungary"/>
         </items>
     </MenuButton>
+    <Button fx:id="myCreaturesButton"
+            text="My Creatures"
+            layoutX="870"
+            layoutY="380"
+            prefWidth="100"
+            prefHeight="40"
+            onAction="#handleMyCreatures"
+            style="-fx-background-color: #7A3A09; -fx-text-fill: white; -fx-font-size: 14" />
     <Button fx:id="resetButton"
-            text="Reset"
+            text="Reset Progress"
             layoutX="870"
             layoutY="430"
             prefWidth="100"
             prefHeight="40"
             onAction="#handleReset"
-            style="-fx-background-color: #7A3A09; -fx-text-fill: white; -fx-font-size: 18" />
+            style="-fx-background-color: #7A3A09; -fx-text-fill: white; -fx-font-size: 13" />
     <Button fx:id="creditsButton"
             text="Credits"
             layoutX="870"
