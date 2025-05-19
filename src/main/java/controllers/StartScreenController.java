@@ -6,10 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import models.*;
 
 @SuppressWarnings("StringTemplateMigration")
@@ -18,8 +15,10 @@ public class StartScreenController {
     @FXML private Label welcomeMessage;
     @FXML private Label highestRegionMessage;
     @FXML private Label currentRegionMessage;
-    @FXML private VBox creditsBox;
-    @FXML private Label creditsLabel;
+    @FXML private VBox promptBox;
+    @FXML private Label promptLabel;
+    @FXML private Button resetButton;
+    @FXML private HBox yesNoBox;
     @FXML private Button creditsButton;
     @FXML private Button exitButton;
     private DatabaseDriver db;
@@ -54,15 +53,43 @@ public class StartScreenController {
         currentRegionMessage.setText("Current Region:\n" + region);
     }
 
+    // ~~~Buttons Below~~~
+
+    public void togglePromptBox(String text, boolean showButtons) {
+        boolean show = !promptBox.isVisible();
+        promptBox.setVisible(show);
+        promptBox.setManaged(show);
+        promptLabel.setText(text);
+        yesNoBox.setVisible(showButtons);
+        yesNoBox.setManaged(showButtons);
+    }
+
+    @FXML
+    public void handleReset(ActionEvent event) {
+        togglePromptBox("Are you sure you want to reset all your progress?\n" +
+                "This action cannot be undone.", true);
+    }
+
+    @FXML public void handleYesReset(ActionEvent event) {
+        try {
+            db.alterHighestRegion(0);
+            db.clearTables();
+            togglePromptBox("", false);
+        } catch (Exception e) {
+            welcomeMessage.setText("Error resetting progress");
+        }
+    }
+
+    @FXML public void handleNoReset(ActionEvent event) {
+        togglePromptBox("", false);
+    }
+
     @FXML
     public void handleCredits(ActionEvent event) {
-        boolean show = !creditsBox.isVisible();
-        creditsBox.setVisible(show);
-        creditsBox.setManaged(show);
-        creditsLabel.setText("Game developed as a personal project by Shep Trundle,\n" +
+        togglePromptBox("Game developed as a personal project by Shep Trundle,\n" +
                 "undergraduate student at the University of Virginia.\n\n" +
                 "Built using IntelliJ and JavaFX.\n\n" +
-                "Art by Shep Trundle, made using pixilart.com");
+                "Art by Shep Trundle, made using pixilart.com", false);
     }
 
     @FXML public void handleExit(ActionEvent event) {

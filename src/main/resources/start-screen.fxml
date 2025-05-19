@@ -24,16 +24,22 @@
            layoutX="860"
            layoutY="110"
            style= "-fx-text-fill: #87FF88; -fx-font-size: 16;" />
-    <VBox fx:id="creditsBox"
+    <VBox fx:id="promptBox"
           layoutX="50" layoutY="100"
           style="-fx-background-color: #7A3A09; -fx-padding: 10; -fx-border-color: #522706; -fx-border-width: 8"
           prefWidth="400"
           prefHeight="150"
           visible="false"
           managed="false">
-          <Label fx:id="creditsLabel"
+          <Label fx:id="promptLabel"
                  wrapText="true"
                  style="-fx-font-size: 14; -fx-text-fill: white"/>
+          <Pane fx:id="spacer" VBox.vgrow="ALWAYS" /> <!-- Spacer to push buttons to bottom -->
+
+          <HBox fx:id="yesNoBox" alignment="CENTER" spacing="20">
+              <Button text="Yes" onAction="#handleYesReset"/>
+              <Button text="No" onAction="#handleNoReset"/>
+          </HBox>
     </VBox>
     <MenuButton text="Select Region"
                 style="-fx-background-color: #7A3A09; -fx-text-fill: white;"
@@ -44,6 +50,14 @@
             <MenuItem text="Hungary" onAction="#handleSelectHungary"/>
         </items>
     </MenuButton>
+    <Button fx:id="resetButton"
+            text="Reset"
+            layoutX="870"
+            layoutY="430"
+            prefWidth="100"
+            prefHeight="40"
+            onAction="#handleReset"
+            style="-fx-background-color: #7A3A09; -fx-text-fill: white; -fx-font-size: 18" />
     <Button fx:id="creditsButton"
             text="Credits"
             layoutX="870"

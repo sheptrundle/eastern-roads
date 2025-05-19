@@ -71,6 +71,7 @@ public class DatabaseDriver {
             Statement statement = connection.createStatement();
             statement.executeUpdate("DELETE FROM Creatures");
             statement.executeUpdate("DELETE FROM sqlite_sequence WHERE name='Creatures'");
+            commit();
         } catch (SQLException e) {
             rollback();
             throw new SQLException(e);
@@ -160,11 +161,12 @@ public class DatabaseDriver {
         }
     }
 
-    public void updateHighestOrigin(int highestOrigin) throws SQLException {
+    public void alterHighestRegion(int highestRegion) throws SQLException {
         try {
             String updateHighestOriginSQL = "UPDATE Player Set HighestRegion = ? WHERE ID = 1";
             PreparedStatement preparedStatement = connection.prepareStatement(updateHighestOriginSQL);
-            preparedStatement.setInt(1, highestOrigin);
+            preparedStatement.setInt(1, highestRegion);
+            commit();
         } catch (SQLException e) {
             throw new SQLException(e);
         }
